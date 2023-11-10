@@ -1,17 +1,18 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-SRC_DIR = source
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(SRCS:.c=.o)
-TARGET = mbf
+CFLAGS = -Wall -Wextra -std=c99 -g
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+SOURCES = $(wildcard source/*.c)
+OBJECTS = $(SOURCES:.c=.o)
 
-%.o: %.c
+.PHONY: all clean
+
+all: bruteforce
+
+bruteforce: $(OBJECTS)
+	$(CC) $(OBJECTS) -o $@ -lpthread -lrt
+
+source/%.o: source/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-.PHONY: clean
+	rm -f $(OBJECTS) bruteforce
